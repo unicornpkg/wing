@@ -4,4 +4,4 @@ Pre-bundled installations of [unicornpkg](https://github.com/unicornpkg/unicornp
 
 ## Installation
 
-Go to Releases, and `wget` the install.lua file available there.
+`wget run` the install.lua file in the repo's root directory. This will bootstrap the directory structure and install the required files.
