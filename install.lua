@@ -3,7 +3,7 @@ local WING_REF = "main/"
 local WING_URL = WING_REPO..WING_REF
 
 shell.run("mkdir bin")
-shell.run("mkdir lib/unicorn")
+shell.run("mkdir lib/unicorn/provider")
 shell.run("mkdir share/help")
 shell.run("wget "..WING_URL.."bin/unicorntool.lua bin/unicorntool.lua")
 shell.run("wget "..WING_URL.."lib/unicorn/init.lua lib/unicorn/init.lua")
