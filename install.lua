@@ -18,5 +18,6 @@ shell.run("wget "..WING_URL.."lib/unicorn/provider/com.github.lua lib/unicorn/pr
 local unicorn = dofile("/lib/unicorn/init.lua")
 
 unicorn.util.fileWrite("https://unicornpkg.github.io/unicornpkg-main", "/etc/unicorn/remotes/90_main.txt")
-unicorn.util.fileWrite("https://raw.githubusercontent.com/unicornpkg/libunicornpkg/main/packages/", "/etc/unicorn/remotes/30_unicornpkg_updates.txt")
+-- multiple remotes are broken, this is a temporary hotfix
+--unicorn.util.fileWrite("https://raw.githubusercontent.com/unicornpkg/libunicornpkg/main/packages/", "/etc/unicorn/remotes/30_unicornpkg_updates.txt")
 
