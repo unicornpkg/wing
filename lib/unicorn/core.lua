@@ -1,5 +1,4 @@
 --- A modular package manager.
--- @author Tomodachi94
 -- @module unicorn.core
 
 local unicorn = {}
@@ -9,7 +8,6 @@ unicorn.util = dofile("/lib/unicorn/util.lua")
 -- better handling of globals with Lua diagnostics
 -- @diagnostic disable:undefined-global
 local fs = fs
-local http = http
 local textutils = textutils
 -- @diagnostic enable:undefined-global
 
@@ -18,24 +16,28 @@ if _HOST:find("Recrafted") then -- Recrafted support
 	textutils = require("textutils")
 end
 
+local function is_installed(package_name)
+		if fs.exists("/etc/unicorn/packages/installed/" .. package_name) then
+			return true
+		else
+			return false
+		end
+end
+
 --- Stores a package table at '/etc/unicorn/packages/installed/{package_name}' with 'textutils.serialise'.
 -- @param package_table table A valid package table.
 -- @return boolean
 local function storePackageData(package_table)
-	unicorn.util.fileWrite(textutils.serialise(package_table), "/etc/unicorn/packages/installed/"..package_table.name)
-	if fs.exists("/etc/unicorn/packages/installed/"..package_table.name) then
-		return true
-	else
-		return false
-	end
+	unicorn.util.fileWrite(textutils.serialise(package_table), "/etc/unicorn/packages/installed/" .. package_table.name)
+	return is_installed(package_table.name)
 end
 
 --- Retrieves a package table stored at '/etc/unicorn/packages/installed/{package_name}' with 'textutils.unserialise'.
 -- @param package_name string A valid name of a package.
 -- @return table If the package table is present.
 local function getPackageData(package_name)
-	if fs.exists("/etc/unicorn/packages/installed/"..package_name) then
-		local file1 = fs.open("/etc/unicorn/packages/installed/"..package_name, "r")
+	if is_installed(package_name) then
+		local file1 = fs.open("/etc/unicorn/packages/installed/" .. package_name, "r")
 		if file1 == nil then
 			return false
 		end
@@ -54,9 +56,9 @@ function unicorn.core.install(package_table)
 		error("This package is lacking the unicornSpec value. Installation was aborted as a precautionary measure.")
 	end
 	if package_table.rel and package_table.rel.depends then
-		for _,v in pairs(package_table.rel.depends) do
-			if not fs.exists("/etc/unicorn/packages/installed/"..v) then
-				error(package_table.name.." requires the "..v.." package. Aborting...")
+		for _, v in pairs(package_table.rel.depends) do
+			if not is_installed(v) then
+				error(package_table.name .. " requires the " .. v .. " package. Aborting...")
 			end
 		end
 	end
@@ -64,11 +66,11 @@ function unicorn.core.install(package_table)
 		return true, getPackageData(package_table.name)
 	end
 	local match
-	for _,v in pairs(fs.list("/lib/unicorn/provider/")) do -- custom provider support
+	for _, v in pairs(fs.list("/lib/unicorn/provider/")) do -- custom provider support
 		local provider_name = string.gsub(v, ".lua", "")
 		if package_table.pkgType == provider_name then
 			match = true
-			local provider = dofile("/lib/unicorn/provider/"..v)
+			local provider = dofile("/lib/unicorn/provider/" .. v)
 			provider(package_table)
 		end
 	end
@@ -80,7 +82,7 @@ function unicorn.core.install(package_table)
 	end
 end
 	storePackageData(package_table)
-	print("Package "..package_table.name.." installed successfully.")
+	print("Package " .. package_table.name .. " installed successfully.")
 	return true, package_table
 end
 
@@ -89,11 +91,11 @@ end
 -- @return boolean
 function unicorn.core.uninstall(package_name)
 	local package_table = getPackageData(package_name)
-	for _,v in pairs(package_table.instdat.filemaps) do
+	for _, v in pairs(package_table.instdat.filemaps) do
 		fs.remove(v)
 	end
-	fs.remove("/etc/unicorn/installed/"..package_name)
-	print("Package "..package_name.." removed.")
+	fs.remove("/etc/unicorn/installed/" .. package_name)
+	print("Package " .. package_name .. " removed.")
 	return true
 end
 
