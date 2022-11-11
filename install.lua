@@ -15,6 +15,7 @@ shell.run("wget " .. WING_URL .. "lib/unicorn/init.lua lib/unicorn/init.lua")
 shell.run("wget " .. WING_URL .. "lib/unicorn/core.lua lib/unicorn/core.lua")
 shell.run("wget " .. WING_URL .. "lib/unicorn/util.lua lib/unicorn/util.lua")
 shell.run("wget " .. WING_URL .. "lib/unicorn/remote.lua lib/unicorn/remote.lua")
+shell.run("wget " .. WING_URL .. "lib/unicorn/semver.lua lib/unicorn/semver.lua")
 
 -- providers
 shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.github.lua lib/unicorn/provider/com.github.lua")
