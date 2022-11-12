@@ -1,4 +1,8 @@
-local shell = require("craftos.shell")
+local shell = shell
+
+if _HOST:find("Recrafted") then
+	shell = require("shell")
+end
 
 local WING_REPO = "https://raw.githubusercontent.com/unicornpkg/wing/"
 local WING_REF  = "main/"
