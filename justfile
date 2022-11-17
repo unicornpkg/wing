@@ -2,9 +2,6 @@
 
 set export
 
-TEMP_DIR := `mktemp -d`
-WING_DIR := `pwd`
-
 default: bundle-all
 
 setup-dirs:
@@ -12,20 +9,13 @@ setup-dirs:
 	-mkdir lib
 	-mkdir tmp
 
-bundle-cli: setup-dirs
-	#!/usr/bin/env bash
-	wget https://raw.githubusercontent.com/unicornpkg/cli/main/unicorntool/init.lua $WING_DIR/bin/unicorntool.lua
-	mv init.lua bin/unicorntool.lua
+bundle-all: setup-dirs
+	git submodule init && git submodule update
+	ln -sr .submodules/libunicorn ./lib/unicorn
+	ln -sr .submodules/cli/hoof/init.lua ./bin/hoof.lua
+	ln -sr .submodules/cli/unicorntool/init.lua ./bin/unicorntool.lua
+	ln -sr .submodules/cli/hoof/help.txt ./usr/share/help/hoof.txt
+	ln -sr .submodules/cli/unicorntool/help.txt ./usr/share/help/unicorntool.txt
 
-bundle-lib: setup-dirs
-	#!/usr/bin/env bash
-	cd tmp
-	git clone https://github.com/unicornpkg/unicornpkg
-	cd unicornpkg && git pull
-	rm -rf ../lib/unicorn
-	mv ./unicorn ../lib/unicorn
 
-bundle-all: bundle-lib bundle-cli
-	#!/usr/bin/env bash
-	rm -rf tmp
 
