@@ -10,7 +10,7 @@ local WING_URL  = WING_REPO .. WING_REF
 
 shell.run("mkdir bin")
 shell.run("mkdir lib/unicorn/provider")
-shell.run("mkdir share/help")
+shell.run("mkdir usr/share/help")
 shell.run("mkdir etc/unicorn/remotes")
 shell.run("mkdir etc/unicorn/packages/installed")
 shell.run("wget " .. WING_URL .. "bin/unicorntool.lua bin/unicorntool.lua")
