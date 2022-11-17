@@ -4,9 +4,7 @@ if _HOST:find("Recrafted") then
 	shell = require("shell")
 end
 
-local WING_REPO = "https://raw.githubusercontent.com/unicornpkg/wing/"
-local WING_REF  = "main/"
-local WING_URL  = WING_REPO .. WING_REF
+local WING_URL = "https://unicornpkg.github.io/wing/"
 
 shell.run("mkdir bin")
 shell.run("mkdir lib/unicorn/provider")
