@@ -26,8 +26,6 @@ shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.github.lua lib/unicor
 shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.github.gist.lua lib/unicorn/provider/com.github.gist.lua")
 shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.gitlab.lua lib/unicorn/provider/com.gitlab.lua")
 shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.pastebin.lua lib/unicorn/provider/com.pastebin.lua")
--- :salute:
--- shell.run("wget " .. WING_URL .. "lib/unicorn/provider/dev.devbin.lua lib/unicorn/provider/dev.devbin.lua")
 shell.run("wget " .. WING_URL .. "lib/unicorn/provider/org.bitbucket.lua lib/unicorn/provider/org.bitbucket.lua")
 
 local unicorn = dofile("/lib/unicorn/init.lua")
