@@ -8,25 +8,42 @@ local WING_REPO = "https://raw.githubusercontent.com/unicornpkg/wing/"
 local WING_REF  = "main/"
 local WING_URL  = WING_REPO .. WING_REF
 
-shell.run("mkdir bin")
-shell.run("mkdir lib/unicorn/provider")
-shell.run("mkdir share/help")
-shell.run("mkdir etc/unicorn/remotes")
-shell.run("mkdir etc/unicorn/packages/installed")
-shell.run("wget " .. WING_URL .. "bin/unicorntool.lua bin/unicorntool.lua")
-shell.run("wget " .. WING_URL .. "bin/hoof.lua bin/hoof.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/init.lua lib/unicorn/init.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/core.lua lib/unicorn/core.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/util.lua lib/unicorn/util.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/remote.lua lib/unicorn/remote.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/semver.lua lib/unicorn/semver.lua")
+local folders = {
+	"/bin",
+	"/lib/unicorn/provider",
+	"/etc/unicorn/remotes",
+	"/etc/unicorn/remotes/installed",
+	"/usr/share/help"
+}
 
--- providers
-shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.github.lua lib/unicorn/provider/com.github.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.github.gist.lua lib/unicorn/provider/com.github.gist.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.gitlab.lua lib/unicorn/provider/com.gitlab.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/provider/com.pastebin.lua lib/unicorn/provider/com.pastebin.lua")
-shell.run("wget " .. WING_URL .. "lib/unicorn/provider/org.bitbucket.lua lib/unicorn/provider/org.bitbucket.lua")
+local files = {
+	"bin/unicorntool.lua",
+	"bin/hoof.lua",
+	"usr/share/help/unicorntool.txt",
+	"usr/share/help/hoof.txt",
+	"lib/unicorn/init.lua",
+	"lib/unicorn/core.lua",
+	"lib/unicorn/util.lua",
+	"lib/unicorn/semver.lua",
+	"lib/unicorn/provider/com.github.gist.lua",
+	"lib/unicorn/provider/com.github.lua",
+	"lib/unicorn/provider/com.github.release.lua",
+	"lib/unicorn/provider/com.gitlab.lua",
+	"lib/unicorn/provider/com.pastebin.lua",
+	"lib/unicorn/provider/local.generic.lua",
+	"lib/unicorn/provider/local.string.lua",
+	"lib/unicorn/provider/org.bitbucket.lua",
+	"startup/completion-hoof.lua",
+	"startup/completion-unicorntool.lua"
+}
+
+for _, v in pairs(folders) do
+	shell.run("mkdir " .. v)
+end
+
+for _, v in pairs(files) do
+	shell.run("wget " .. WING_URL .. v .. " " .. v)
+end
 
 local unicorn = dofile("/lib/unicorn/init.lua")
 

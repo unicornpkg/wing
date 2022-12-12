@@ -17,12 +17,12 @@ function unicorn.util.smartHttp(sUrl)
 	print("Connecting to " .. sUrl .. "... ")
 	local response, httpError = http.get(sUrl)
 
-	if response then
+	if response and not httpError then
 		print("HTTP success.")
 
 		local sResponse = response.readAll()
 		response.close()
-		return sResponse
+		return sResponse, false
 	else
 		return false, httpError
 	end
