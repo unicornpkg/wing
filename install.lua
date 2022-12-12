@@ -24,6 +24,7 @@ local files = {
 	"lib/unicorn/init.lua",
 	"lib/unicorn/core.lua",
 	"lib/unicorn/util.lua",
+	"lib/unicorn/remote.lua",
 	"lib/unicorn/semver.lua",
 	"lib/unicorn/provider/com.github.gist.lua",
 	"lib/unicorn/provider/com.github.lua",
