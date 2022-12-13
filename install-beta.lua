@@ -30,7 +30,8 @@ local files = {
 	["unicorn/core.lua"] = "/lib/unicorn/core.lua",
 	["unicorn/util.lua"] = "/lib/unicorn/util.lua",
 	["unicorn/remote.lua"] = "/lib/unicorn/remote.lua",
-	["unicorn/provider/com.github.lua"] = "/lib/unicorn/provider/com.github.lua"
+	["unicorn/provider/com.github.lua"] = "/lib/unicorn/provider/com.github.lua",
+	["unicorn/semver.lua"] = "/lib/unicorn/semver.lua"
 }
 
 for _, v in pairs(folders) do
