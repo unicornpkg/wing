@@ -26,19 +26,19 @@ local folders = {
 }
 
 local files = {
-	"lib/unicorn/init.lua",
-	"lib/unicorn/core.lua",
-	"lib/unicorn/util.lua",
-	"lib/unicorn/remote.lua",
-	"lib/unicorn/provider/com.github.lua"
+	["unicorn/init.lua"] = "/lib/unicorn/init.lua",
+	["unicorn/core.lua"] = "/lib/unicorn/core.lua",
+	["unicorn/util.lua"] = "/lib/unicorn/util.lua",
+	["unicorn/remote.lua"] = "/lib/unicorn/remote.lua",
+	["unicorn/provider/com.github.lua"] = "/lib/unicorn/provider/com.github.lua"
 }
 
 for _, v in pairs(folders) do
 	shell.run("mkdir " .. v)
 end
 
-for _, v in pairs(files) do
-	shell.run("wget " .. URL .. v .. " " .. v)
+for k, v in pairs(files) do
+	shell.run("wget " .. URL .. k .. " " .. v)
 end
 
 local unicorn = dofile("/lib/unicorn/init.lua")
