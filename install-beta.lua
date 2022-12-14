@@ -30,13 +30,14 @@ local files = {
 	["unicorn/core.lua"] = "/lib/unicorn/core.lua",
 	["unicorn/util.lua"] = "/lib/unicorn/util.lua",
 	["unicorn/remote.lua"] = "/lib/unicorn/remote.lua",
-	["unicorn/provider/com.github.lua"] = "/lib/unicorn/provider/com.github.lua",
-	["unicorn/semver.lua"] = "/lib/unicorn/semver.lua"
+	["unicorn/provider/com.github.lua"] = "/lib/unicorn/provider/com.github.lua"
 }
 
 for _, v in pairs(folders) do
 	shell.run("mkdir " .. v)
 end
+
+shell.run("wget https://raw.githubusercontent.com/kikito/semver.lua/master/semver.lua /lib/semver.lua")
 
 for k, v in pairs(files) do
 	shell.run("wget " .. URL .. k .. " " .. v)
