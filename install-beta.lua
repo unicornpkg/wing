@@ -59,7 +59,7 @@ local install_packages = {
 	loadstring(unicorn.util.smartHttp(PACKAGES .. "hoof.lua")),
 }
 
-for _, v in install_packages do
+for _, v in pairs(install_packages) do
 	unicorn.core.install(v)
 end
 
