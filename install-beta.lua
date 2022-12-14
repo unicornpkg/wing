@@ -45,18 +45,18 @@ end
 local unicorn = dofile("/lib/unicorn/init.lua")
 
 local install_packages = {
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "semver.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-github.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-github-releases.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-github-gist.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-gitlab.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-pastebin.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-bitbucket.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-generic.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-string.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicorntool.lua")),
-	loadstring(unicorn.util.smartHttp(PACKAGES .. "hoof.lua")),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "semver.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-github.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-github-releases.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-github-gist.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-gitlab.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-pastebin.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-bitbucket.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-generic.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicornpkg-provider-string.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "unicorntool.lua"))(),
+	loadstring(unicorn.util.smartHttp(PACKAGES .. "hoof.lua"))(),
 }
 
 for _, v in pairs(install_packages) do
