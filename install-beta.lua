@@ -12,7 +12,7 @@ if _HOST:find("Recrafted") then
 end
 
 local REPO = "https://raw.githubusercontent.com/unicornpkg/libunicornpkg/"
-local REF  = "v1.0.0/"
+local REF  = "v1.0.1/"
 local URL  = REPO .. REF
 
 local PACKAGES = "https://raw.githubusercontent.com/unicornpkg/wing/main/packages/"
