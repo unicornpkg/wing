@@ -39,12 +39,35 @@ local files = {
 }
 
 for _, v in pairs(folders) do
-	shell.run("mkdir " .. v)
+	fs.makeDir(v)
 end
 
-for _, v in pairs(files) do
-	shell.run("wget " .. WING_URL .. v .. " " .. v)
+local fns = {}
+for i, filename in ipairs(files) do
+	fns[i] = function()
+		print("Request:", filename)
+		local handle, err, err_handle = http.get(WING_URL .. filename)
+		
+		if handle then
+			local f_handle, f_err = io.open(filename, 'w')
+			if f_handle then
+				f_handle:write(handle.readAll())
+				f_handle:close()
+				handle.close()
+				print("Downloaded", filename)
+			else
+				-- You may wish to hard-fail here instead.
+				printError(("Failed to open %s for writing: %s"):format(filename, f_err))
+			end
+		else
+			-- Again, you may wish to hard-fail here instead, with err_handle.readAll()
+			printError(("Failed to download %s: %s"):format(filename, err))
+			err_handle.close()
+		end
+	end
 end
+
+parallel.waitForAll(table.unpack(fns))
 
 local unicorn = dofile("/lib/unicorn/init.lua")
 
