@@ -50,14 +50,15 @@ for i, filename in ipairs(files) do
 		while tries < 5 do
 			tries = tries + 1
 			print("Request:", filename)
-			local handle, err, errHandle = http.get(WING_URL .. filename)
+			local httpHandle, httpErr, httpErrHandle = http.get(WING_URL .. filename)
 
-			if handle then
+			if httpHandle then
 				local fileHandle, fileErr = io.open(filename, 'w')
+
 				if fileHandle then
-					fileHandle:write(handle.readAll())
+					fileHandle:write(httpHandle.readAll())
 					fileHandle:close()
-					handle.close()
+					httpHandle.close()
 					print("Downloaded", filename)
 
 					return
@@ -65,15 +66,15 @@ for i, filename in ipairs(files) do
 					printError("Failed to open", filename, "for writing:", fileErr)
 				end
 			else
-				printError("Failed to download", filename, ":", err)
+				printError("Failed to download", filename, ":", httpErr)
 
-				if errHandle.getResponseCode() ~= 404 then
+				if httpErrHandle.getResponseCode() ~= 404 then
 					printError("Failed to download", filename, ": 404 Not Found")
-					errHandle.close()
+					httpErrHandle.close()
 					return
 				end
 
-				errHandle.close()
+				httpErrHandle.close()
 			end
 
 			printError(("Retrying in %d second%s..."):format(tries * 2, tries > 1 and "s" or ""))
