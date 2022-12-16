@@ -45,25 +45,42 @@ end
 local fns = {}
 for i, filename in ipairs(files) do
 	fns[i] = function()
-		print("Request:", filename)
-		local handle, err, err_handle = http.get(WING_URL .. filename)
-		
-		if handle then
-			local f_handle, f_err = io.open(filename, 'w')
-			if f_handle then
-				f_handle:write(handle.readAll())
-				f_handle:close()
-				handle.close()
-				print("Downloaded", filename)
+		local tries = 0
+
+		while tries < 5 do
+			tries = tries + 1
+			print("Request:", filename)
+			local handle, err, errHandle = http.get(WING_URL .. filename)
+
+			if handle then
+				local fileHandle, fileErr = io.open(filename, 'w')
+				if fileHandle then
+					fileHandle:write(handle.readAll())
+					fileHandle:close()
+					handle.close()
+					print("Downloaded", filename)
+
+					return
+				else
+					printError("Failed to open", filename, "for writing:", fileErr)
+				end
 			else
-				-- You may wish to hard-fail here instead.
-				printError(("Failed to open %s for writing: %s"):format(filename, f_err))
+				printError("Failed to download", filename, ":", err)
+
+				if errHandle.getResponseCode() ~= 404 then
+					printError("Failed to download", filename, ": 404 Not Found")
+					errHandle.close()
+					return
+				end
+
+				errHandle.close()
 			end
-		else
-			-- Again, you may wish to hard-fail here instead, with err_handle.readAll()
-			printError(("Failed to download %s: %s"):format(filename, err))
-			err_handle.close()
+
+			printError(("Retrying in %d second%s..."):format(tries * 2, tries > 1 and "s" or ""))
+			sleep(tries * 2)
 		end
+
+		printError("Failed to download", filename, "after 5 tries.")
 	end
 end
 
