@@ -4,7 +4,7 @@
 local unicorn = {}
 unicorn.core = {}
 unicorn.util = dofile("/lib/unicorn/util.lua")
-unicorn.semver = dofile("/lib/unicorn/semver.lua")
+local semver = dofile("/lib/semver.lua")
 
 -- better handling of globals with Lua diagnostics
 -- @diagnostic disable:undefined-global
@@ -72,13 +72,13 @@ local function check_installable(package_table)
 	local existing_package = getPackageData(package_table.name)
 	if existing_package then
 		if existing_package.version and package_table.version then
-			if unicorn.semver(existing_package.version) == unicorn.semver(package_table.version) then
+			if semver(existing_package.version) == semver(package_table.version) then
 				error(
 					"Same version of package is installed. Uninstall the currently installed package if you want to override."
 				)
-			elseif unicorn.semver(existing_package.version) > unicorn.semver(package_table.version) then
+			elseif semver(existing_package.version) > semver(package_table.version) then
 				error("Newer version of package is installed. Uninstall the current package if you want to override.")
-			elseif unicorn.semver(existing_package.version) < unicorn.semver(package_table.version) then
+			elseif semver(existing_package.version) < semver(package_table.version) then
 				unicorn.core.uninstall(existing_package.name)
 			end
 		end
@@ -116,13 +116,21 @@ end
 -- @param package_table A valid package table
 -- @param package_script_name A value that is either "preinstall", "postinstall", "preremove", or "postremove".
 local function action_script(package_table, package_script_name)
-	if package_table.script[package_script_name] then
+	if package_table.script and package_table.script[package_script_name] then
 		local output, scriptError = loadstring(package_table.script[package_script_name])
 		if scriptError then
 			error(scriptError)
 		else
 			print("Package script " .. package_script_name .. " returned " .. tostring(output))
 		end
+	end
+end
+
+--- Creates folders from package_table.dirs
+-- @param package_table A valid package table
+local function action_make_folders(package_table)
+	for _, v in package_table.dirs do
+		fs.makeDir(v)
 	end
 end
 
@@ -142,6 +150,9 @@ function unicorn.core.install(package_table)
 	check_installable(package_table)
 
 	action_script(package_table, "preinstall")
+
+	-- make folders
+	action_make_folders(package_table)
 	-- modular provider loading and usage
 	action_modular_providers(package_table)
 	action_script(package_table, "postinstall")
@@ -150,6 +161,14 @@ function unicorn.core.install(package_table)
 	storePackageData(package_table)
 	print("Package " .. package_table.name .. " installed successfully.")
 	return true, package_table
+end
+
+local function action_delete_folders(package_table)
+	for _, v in package_table.dirs do
+		if not next(fs.list(v)) then
+			fs.delete(v)
+		end
+	end
 end
 
 --- Removes a package from the system.
@@ -162,6 +181,7 @@ function unicorn.core.uninstall(package_name)
 	for _, v in pairs(package_table.instdat.filemaps) do
 		fs.delete(v)
 	end
+	action_delete_folders(package_table)
 	fs.delete("/etc/unicorn/installed/" .. package_name)
 	action_script(package_table, "postremove")
 	print("Package " .. package_name .. " removed.")
