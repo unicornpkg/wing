@@ -21,6 +21,7 @@ local files = {
 	"bin/hoof.lua",
 	"usr/share/help/unicorntool.txt",
 	"usr/share/help/hoof.txt",
+	"lib/semver.lua",
 	"lib/unicorn/init.lua",
 	"lib/unicorn/core.lua",
 	"lib/unicorn/util.lua",
