@@ -20,7 +20,7 @@ bundle-cli: setup-dirs
 bundle-lib: setup-dirs
 	#!/usr/bin/env bash
 	cd tmp
-	git clone https://github.com/unicornpkg/unicornpkg
+	git clone https://github.com/unicornpkg/libunicornpkg
 	cd unicornpkg && git pull
 	rm -rf ../lib/unicorn
 	mv ./unicorn ../lib/unicorn
