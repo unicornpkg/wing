@@ -1,6 +1,6 @@
 # Wing
 
-Pre-bundled installations of [unicornpkg](https://github.com/unicornpkg/unicornpkg) and its [CLI tools](https://github.com/unicornpkg/cli), ready to use.
+Pre-bundled installations of [libunicornpkg](https://github.com/unicornpkg/libunicornpkg) and its [CLI tools](https://github.com/unicornpkg/cli), ready to use.
 
 ## Installation
 
