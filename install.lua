@@ -40,12 +40,53 @@ local files = {
 }
 
 for _, v in pairs(folders) do
-	shell.run("mkdir " .. v)
+	fs.makeDir(v)
 end
 
-for _, v in pairs(files) do
-	shell.run("wget " .. WING_URL .. v .. " " .. v)
+local fns = {}
+for i, filename in ipairs(files) do
+	fns[i] = function()
+		local tries = 0
+
+		while tries < 5 do
+			tries = tries + 1
+			print("Request:", filename)
+			local httpHandle, httpErr, httpErrHandle = http.get(WING_URL .. filename)
+
+			if httpHandle then
+				local fileHandle, fileErr = io.open(filename, 'w')
+
+				if fileHandle then
+					fileHandle:write(httpHandle.readAll())
+					fileHandle:close()
+					httpHandle.close()
+					print("Downloaded", filename)
+
+					return
+				else
+					printError("Failed to open", filename, "for writing:", fileErr)
+				end
+			else
+				printError("Failed to download", filename, ":", httpErr)
+
+				if httpErrHandle.getResponseCode() ~= 404 then
+					printError("Failed to download", filename, ": 404 Not Found")
+					httpErrHandle.close()
+					return
+				end
+
+				httpErrHandle.close()
+			end
+
+			printError(("Retrying in %d second%s..."):format(tries * 2, tries > 1 and "s" or ""))
+			sleep(tries * 2)
+		end
+
+		printError("Failed to download", filename, "after 5 tries.")
+	end
 end
+
+parallel.waitForAll(table.unpack(fns))
 
 local unicorn = dofile("/lib/unicorn/init.lua")
 
