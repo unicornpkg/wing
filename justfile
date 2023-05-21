@@ -1,31 +1,37 @@
 #!/usr/bin/env just --justfile
 
 set export
+default: bundle
 
-TEMP_DIR := `mktemp -d`
-WING_DIR := `pwd`
+setup:
+  #!/usr/bin/env zsh
+  rm -rf ./build
+  mkdir -p ./build/src/{bin,lib,share,etc}
 
-default: bundle-all
+copy-cli: setup
+  #!/usr/bin/env zsh
+  cp ./src/cli/unicorntool/init.lua ./build/src/bin/unicorntool.lua
+  cp ./src/cli/hoof/init.lua ./build/src/bin/hoof.lua
+  cp -r ./src/cli/docs/man ./build/src/share/help
 
-setup-dirs:
-	-mkdir bin
-	-mkdir lib
-	-mkdir tmp
+copy-lib: setup
+  #!/usr/bin/env zsh
+  cp -r ./src/libunicornpkg/unicorn ./build/src/lib/unicorn
 
-bundle-cli: setup-dirs
-	#!/usr/bin/env bash
-	wget https://raw.githubusercontent.com/unicornpkg/cli/main/unicorntool/init.lua $WING_DIR/bin/unicorntool.lua
-	mv init.lua bin/unicorntool.lua
+copy: copy-lib copy-cli
 
-bundle-lib: setup-dirs
-	#!/usr/bin/env bash
-	cd tmp
-	git clone https://github.com/unicornpkg/unicornpkg
-	cd unicornpkg && git pull
-	rm -rf ../lib/unicorn
-	mv ./unicorn ../lib/unicorn
+minimize: copy
+  #!/usr/bin/env zsh
+  for i in $(fd --base-directory ./build/src '^.*\.lua$'); do
+    darklua minify ./build/src/$i ./build/$i
+  done
 
-bundle-all: bundle-lib bundle-cli
-	#!/usr/bin/env bash
-	rm -rf tmp
+bundle: minimize
+  #!/usr/bin/env zsh
+  cd ./build/src
+  vfstool-rs -d ./ -a ../archive.sea --self-extracting
+
+tag:
+  #!/usr/bin/env zsh
+  git tag `date +%s`
 
