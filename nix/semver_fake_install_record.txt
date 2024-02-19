@@ -1,0 +1,15 @@
+{
+  pkgType = "com.github",
+  name = "semver",
+  instdat = {
+    repo_ref = "v1.2.1",
+    filemaps = {
+      [ "semver.lua" ] = "/lib/semver.lua",
+    },
+    repo_owner = "kikito",
+    repo_name = "semver.lua",
+  },
+  unicornSpec = "v1.0.0",
+  version = "1.2.1",
+  desc = "Library for manipulating Semantic Versioning version numbers",
+}
