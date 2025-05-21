@@ -1,0 +1,40 @@
+name: Update Submodule to Latest Tag
+
+on:
+  schedule:
+    - cron: '32 6 * * *'  # Daily at 6:32am
+  workflow_dispatch:
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update each submodule in src/ to latest tag
+        run: |
+          updated=false
+          for submodule_path in $(find src -type d -name ".git" | sed 's/\/.git$//'); do
+            echo "Updating $submodule_path"
+            cd "$submodule_path"
+            git fetch --tags
+            latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+            git checkout "$latest_tag"
+            cd - > /dev/null
+            git add "$submodule_path"
+            updated=true
+          done
+
+          if [ "$updated" = true ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update submodules in src/ to latest tags"
+            git push
+          else
+            echo "No submodules updated."
+          fi
