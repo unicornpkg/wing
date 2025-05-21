@@ -31,10 +31,10 @@ function serFile(fpath)
   if fs.getSize(root .. fpath) > 1000000 then
     print (root .. fpath .. " is too long, skipping")
   else  
-    file = fs.open(root .. fpath, "r")
+    local file = fs.open(root .. fpath, "r")
     local text = file.readAll()
     file.close()
-    sfxFiles = sfxFiles .. "\"" .. fpath .. "\",\n\[=====\[" .. text .. "\]=====\]" .. ",\n"
+    sfxFiles = sfxFiles .. "\"" .. fpath .. "\",\n[=====[\n" .. text .. "\n]=====],\n"
   end
 end
 
