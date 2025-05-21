@@ -1,39 +1,54 @@
-name: Update Submodule to Latest Tag
+name: Update Submodules to Latest Tag
 
 on:
   schedule:
-    - cron: '32 6 * * *'  # Daily at 6:32am
+    - cron: '32 6 * * *'  # Daily at 6:32 AM UTC
   workflow_dispatch:
 
 jobs:
-  update-submodule:
+  update-submodules:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo with submodules
         uses: actions/checkout@v4
         with:
           submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update each submodule in src/ to latest tag
+      - name: Update all submodules to latest tags
         run: |
-          updated=false
-          for submodule_path in $(find src -type d -name ".git" | sed 's/\/.git$//'); do
-            echo "Updating $submodule_path"
-            cd "$submodule_path"
-            git fetch --tags
-            latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
-            git checkout "$latest_tag"
-            cd - > /dev/null
-            git add "$submodule_path"
-            updated=true
-          done
+          set -e
 
-          if [ "$updated" = true ]; then
+          updated=false
+
+          output="$(
+            git submodule -q foreach '
+              git fetch --tags origin
+
+              # Tag closest behind origin/HEAD
+              tag="$(git describe --tags --abbrev=0 origin/HEAD 2>/dev/null || true)"
+
+              # Match only version-like tags
+              regex="[vV]?[0-9]+(\.[0-9]+)*"
+
+              cur="$(git describe --tags 2>/dev/null || echo "none")"
+
+              if echo "$tag" | grep -qE "^$regex$" && [ "$cur" != "$tag" ] &&
+                 printf "%s\n%s" "$cur" "$tag" | sort -VC; then
+                git switch -dq -- "$tag"
+                echo "$name: $cur -> $tag"
+              fi
+            '
+          )"
+
+          if [ -n "$output" ]; then
+            echo "$output"
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git commit -m "Update submodules in src/ to latest tags"
+            git add .
+            git commit -m "Update submodules to latest tags"
+            git show --raw
             git push
           else
             echo "No submodules updated."
