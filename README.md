@@ -13,11 +13,6 @@ The entrypoint for users is `./install.lua`, which downloads the latest `install
 
 The `install.lua.sfx` is generated from the `build.sh` script in the repository. Each component of unicornpkg is a Git submodule located in `src`,[^1] and the relevant files are copied into a temporary directory in the correct layout. CraftOS-PC is launched and executes `src/sfx.lua`, which packs everything into `install.lua.sfx`. This file is copied into the repository's working directory by `build.sh`.
 
-On every update to a component, a developer:
-* Runs `./build.sh`
-* Creates a new GitHub Release with the name and tag of a Unix timestamp
-* Uploads the `install.lua.sfx` file into said GitHub Release
-
-After this process is completed, a developer should manually test that the installer functions.
+On every update to a component, a developer should run `./build.sh && ./publish.sh` scripts, assuming that the GitHub CLI is available. `publish.sh` also tests that the installer works using CraftOS-PC.
 
 [^1]: The `src/static` directory contains files that will be copied as-is into the temporary directory.
