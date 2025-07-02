@@ -1,5 +1,6 @@
 build/
 archive.sfx
+install.lua.sfx
 
 # Nix
 result

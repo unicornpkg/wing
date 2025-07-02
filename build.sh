@@ -36,6 +36,6 @@ cp "$CLI_DIR/unicorntool/init.lua" "$COMPUTER_DIR/env/bin/unicorntool.lua"
 
 cp -r "$SOURCE_DIR" "$COMPUTER_DIR/source"
 
-craftos --directory "$DATA_DIR" --headless --exec "shell.run('sfx.lua env archive.sfx'); shell.run('archive.sfx test') os.shutdown()"
+craftos --directory "$DATA_DIR" --headless --exec "shell.run('sfx.lua env install.lua.sfx'); shell.run('install.lua.sfx test') os.shutdown()"
 
-cp "$COMPUTER_DIR/archive.sfx" ./.
+cp "$COMPUTER_DIR/install.lua.sfx" ./.
