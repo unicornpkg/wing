@@ -20,7 +20,11 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v24
 
-      - name: Authenticate GitHub CLI with PAT
+      - name: Fetch Nix devShell dependencies
+        run: |
+          nix develop --impure --command true
+
+      - name: Run build.sh and publish.sh
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
