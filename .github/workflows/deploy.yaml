@@ -1,0 +1,24 @@
+# .github/workflows/deploy.yml
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
+
+      - name: Authenticate GitHub CLI with PAT
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          nix develop --impure --command bash -c './build.sh && ./publish.sh'
