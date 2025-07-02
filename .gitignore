@@ -1,2 +1,7 @@
 build/
 archive.sfx
+
+# Nix
+result
+# direnv
+.direnv
