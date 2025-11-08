@@ -30,7 +30,7 @@ jobs:
               tag="$(git describe --tags --abbrev=0 origin/HEAD 2>/dev/null || true)"
 
               # Match only version-like tags
-              regex="[vV]?[0-9]+(\.[0-9]+)*"
+              regex="^[vV]?[0-9]+(\.[0-9]+)*$"
 
               cur="$(git describe --tags 2>/dev/null || echo "none")"
 
