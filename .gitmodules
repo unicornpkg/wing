@@ -1,6 +1,3 @@
 [submodule "src/libunicornpkg"]
 	path = src/libunicornpkg
 	url = https://github.com/unicornpkg/libunicornpkg
-[submodule "src/cli"]
-	path = src/cli
-	url = https://github.com/unicornpkg/cli

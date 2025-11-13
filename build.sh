@@ -25,13 +25,6 @@ cp -r "$STATIC_DIR/"* "$COMPUTER_DIR/env"
 
 cp -r "$LIBUNICORNPKG_DIR/unicorn" "$COMPUTER_DIR/env/lib"
 
-# TODO: Use packages and libunicornpkg to install the CLI
-cp "$CLI_DIR/hoof/init.lua" "$COMPUTER_DIR/env/bin/hoof.lua"
-cp "$CLI_DIR/unicorntool/init.lua" "$COMPUTER_DIR/env/bin/unicorntool.lua"
-
-# cp "$CLI_DIR/hoof/help.txt" "$COMPUTER_DIR/env/usr/share/help/hoof.txt"
-# cp "$CLI_DIR/unicorntool/help.txt" "$COMPUTER_DIR/env/usr/share/help/unicorntool.txt"
-
 cp -r "$SOURCE_DIR" "$COMPUTER_DIR/source"
 
 craftos --directory "$DATA_DIR" --headless --exec "shell.run('sfx.lua env install.lua.sfx'); shell.run('install.lua.sfx test') os.shutdown()"
