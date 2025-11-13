@@ -14,3 +14,4 @@ unicorn.core.install(
 
 unicorn.remote.install("semver")
 unicorn.remote.install("anavrins-sha256")
+unicorn.remote.install("unicorn-cli")
