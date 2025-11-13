@@ -24,8 +24,6 @@ cp "$SOURCE_DIR/src/sfx.lua" "$COMPUTER_DIR/sfx.lua"
 cp -r "$STATIC_DIR/"* "$COMPUTER_DIR/env"
 
 cp -r "$LIBUNICORNPKG_DIR/unicorn" "$COMPUTER_DIR/env/lib"
-cp "$LIBUNICORNPKG_DIR/vendor/semver/semver.lua" "$COMPUTER_DIR/env/lib"
-cp "$LIBUNICORNPKG_DIR/vendor/sha256.lua" "$COMPUTER_DIR/env/lib"
 
 # TODO: Use packages and libunicornpkg to install the CLI
 cp "$CLI_DIR/hoof/init.lua" "$COMPUTER_DIR/env/bin/hoof.lua"
