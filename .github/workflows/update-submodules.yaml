@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repo with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
