@@ -1,3 +1,6 @@
+printError("This installer is deprecated. Please see up-to-date installation instructions here:")
+error("https://unicornpkg.github.io/libunicornpkg/installation.html")
+
 fs.makeDir("/tmp")
 shell.run("wget https://github.com/unicornpkg/wing/releases/latest/download/install.lua.sfx /tmp/install.lua.sfx")
 shell.run("/tmp/install.lua.sfx /")
