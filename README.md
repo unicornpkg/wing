@@ -1,3 +1,7 @@
+> [!NOTE]
+> The installer has been moved to [the libunicornpkg repository](https://github.com/unicornpkg/libunicornpkg).
+> Please see the documentation for [up-to-date installation instructions](https://unicornpkg.github.io/libunicornpkg/installation.html).
+
 # Wing
 
 Pre-bundled installations of [unicornpkg](https://github.com/unicornpkg/unicornpkg) and its [CLI tools](https://github.com/unicornpkg/cli), ready to use.
